@@ -3,7 +3,7 @@
 Status: Draft. Maintainer scope approval and design review are pending.
 Author: @n3wth. Date: 2026-10-24.
 
-Related issues: #121 and #122. Proposed implementation: #120.
+Related issues: #121 and #122. Proposed implementation: #136.
 
 ## Problem and scope
 
@@ -17,7 +17,7 @@ or runtime support.
 
 ## Package contract
 
-Use `scripts/pack_plugin.py`, proposed in #120, as the single builder.
+Use `scripts/pack_plugin.py`, proposed in #136, as the single builder.
 `--target claude|openai` selects the host. `--output` selects a new destination.
 Produce an `egm-TARGET` folder and an `egm-TARGET.zip` archive.
 
@@ -65,7 +65,7 @@ OpenAI packaging does not establish support for every ChatGPT mode.
 - Record the source SHA, installed artifact identity, host/model version,
   and separate installation, workflow, and isolation outcomes.
 - Preserve the evidence gaps tracked in #105 and #106.
-- Obtain scope approval and merge this design before merging #120.
+- Obtain scope approval and merge this design before merging #136.
 - Coordinate tagged artifacts through the [release design](releases.md).
 
 Directory publication in #121 and #122 remains separate. Confirm the owning

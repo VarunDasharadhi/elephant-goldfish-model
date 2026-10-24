@@ -3,7 +3,7 @@
 Status: Draft. Maintainer scope approval and design review are pending.
 Author: @n3wth. Date: 2026-10-24.
 
-Related issue: #124. Proposed implementation: #128, dependent on #120.
+Related issue: #124. Proposed implementation: #137, dependent on #136.
 
 ## Problem and scope
 
@@ -56,8 +56,8 @@ replacing existing assets. Neither job creates tags or publishes releases.
 ## Acceptance and release procedure
 
 1. Obtain scope approval for #124 and merge the reviewed design.
-2. Merge #120 after its design approval and renewed implementation review.
-3. Retarget #128 to `main`, refresh validation, and merge after approval.
+2. Merge #136 after its design approval and renewed implementation review.
+3. Retarget #137 to `main`, refresh validation, and merge after approval.
 4. Select the reviewed version and commit. Regenerate packaged content and
    validate all included runtime changes before a maintainer creates the tag.
 5. Dispatch the workflow. Inspect both archives, checksums, and source identity.
