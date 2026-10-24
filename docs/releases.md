@@ -19,7 +19,8 @@ paths, and report formats. Do not change published artifacts under the same tag.
    tag on the selected main commit. Never move an existing release tag.
 4. Run **Prepare draft release** from `main`, supplying that existing tag.
    The tagged commit must include the release scripts and pass unit tests.
-5. Review the draft's two runtime ZIPs, `SHA256SUMS`, and source commit. Replace
+5. Review the draft's two runtime ZIPs, `SHA256SUMS`, and source commit.
+   Verify both ZIP attestations as described below. Replace
    placeholder notes with changes, compatibility/migration details, and exact
    artifact host-verification evidence. Unverified hosts remain unverified.
 6. Publish the draft manually only after review. Directory publication is separate.
@@ -37,3 +38,27 @@ The local command checks manifest versions and builds artifacts; it does not
 verify Git tag ancestry or run tests. Those checks belong to the workflow.
 Exact installed-bundle verification remains tracked in
 [#60](https://github.com/google/elephant-goldfish-model/issues/60).
+
+## Verify downloads
+
+Download both ZIPs and `SHA256SUMS` into one directory. With GitHub CLI installed,
+run these commands from that directory:
+
+```sh
+sha256sum -c SHA256SUMS
+for archive in egm-claude-*.zip egm-openai-*.zip; do
+  gh attestation verify "$archive" --repo google/elephant-goldfish-model \
+    --signer-workflow google/elephant-goldfish-model/.github/workflows/release.yml \
+    --source-ref refs/heads/main || exit 1
+done
+```
+
+The workflow signs both ZIP digests and stores provenance in GitHub before
+creating a draft. Signing failure blocks draft creation. Local preparation does
+not create attestations. The build job uses `id-token: write` to request a signing
+certificate and `attestations: write` to store the result. It cannot write releases.
+
+The provenance identifies the workflow run from `main`. The tagged source checked
+out during that run can be a different commit. Check the release notes for that
+source SHA and inspect the workflow run before publication. Attestations do not
+establish host support or prove that the code is safe.

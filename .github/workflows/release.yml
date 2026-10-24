@@ -22,6 +22,8 @@ jobs:
       commit: ${{ steps.source.outputs.commit }}
     permissions:
       contents: read
+      id-token: write
+      attestations: write
     steps:
       - name: Require default-branch workflow
         env:
@@ -50,6 +52,11 @@ jobs:
         env:
           RELEASE_TAG: ${{ inputs.tag }}
         run: python scripts/prepare_release.py --tag "$RELEASE_TAG" --commit "$(git rev-parse HEAD)" --output release
+      - name: Attest runtime archives
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: release/*.zip
+          create-storage-record: false
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: release-candidate
