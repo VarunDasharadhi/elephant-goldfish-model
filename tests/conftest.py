@@ -27,14 +27,9 @@ def repo_root() -> pathlib.Path:
 
 
 @pytest.fixture(scope="session")
-def skills_dir(repo_root: pathlib.Path) -> pathlib.Path:
-  """Return the canonical skills directory."""
-  return repo_root / "skills"
-
-
-@pytest.fixture(scope="session")
-def discovered_skills(skills_dir: pathlib.Path) -> List[pathlib.Path]:
+def discovered_skills(repo_root: pathlib.Path) -> List[pathlib.Path]:
   """Returns all skill directory paths under the skills root."""
+  skills_dir = repo_root / "skills"
   skills = [
       p for p in skills_dir.iterdir()
       if p.is_dir() and not p.name.startswith((".", "_"))
