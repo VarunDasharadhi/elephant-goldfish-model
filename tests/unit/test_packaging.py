@@ -167,6 +167,84 @@ def test_refuses_unbundled_services(source: Path, tmp_path: Path, field: str) ->
     build(source, "openai", tmp_path / "output")
 
 
+@pytest.mark.parametrize("target", ["claude", "openai"])
+@pytest.mark.parametrize("missing", [
+    "skills",
+    "skills/egm_bootstrap/SKILL.md",
+    "skills/egm_brainstorm/SKILL.md",
+    "skills/egm_draft/SKILL.md",
+    "skills/egm_drift_report/SKILL.md",
+    "skills/egm_resolve/SKILL.md",
+    "skills/egm_review/SKILL.md",
+    "skills/egm_review_loop/SKILL.md",
+    "skills/egm_review/agents/openai.yaml",
+    "skills/egm_review/assets/icon.svg",
+    "skills/egm_bootstrap/references/worker-return.schema.json",
+    "skills/egm_draft/references/design_doc.md",
+    "agents/design_critic.md",
+    "resources/execution_instructions.md",
+    "resources/document_standards/zoom-out-standard.md",
+    "docs/harnesses.md",
+])
+def test_incomplete_source_fails_before_output(
+    source: Path, tmp_path: Path, target: str, missing: str,
+) -> None:
+  path = source / missing
+  if path.is_dir():
+    shutil.rmtree(path)
+  else:
+    path.unlink()
+  output = tmp_path / "output"
+  with pytest.raises(ValueError, match="Missing required file"):
+    build(source, target, output)
+  assert not output.exists()
+
+
+@pytest.mark.parametrize("target", ["claude", "openai"])
+@pytest.mark.parametrize("suffix", ["", ".zip"])
+def test_rejects_dangling_output_symlinks(
+    source: Path, tmp_path: Path, target: str, suffix: str,
+) -> None:
+  output = tmp_path / "output"
+  output.mkdir()
+  outside = tmp_path / "outside"
+  link = output / f"egm-{target}{suffix}"
+  link.symlink_to(outside, target_is_directory=not suffix)
+  with pytest.raises(ValueError, match="already exists"):
+    build(source, target, output)
+  assert link.is_symlink()
+  assert not outside.exists()
+  assert list(output.iterdir()) == [link]
+
+
+@pytest.mark.parametrize("target", ["claude", "openai"])
+@pytest.mark.parametrize("symlink", [False, True])
+def test_archive_claimed_after_preflight_is_not_overwritten(
+    source: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+    target: str, symlink: bool,
+) -> None:
+  output = tmp_path / "output"
+  archive = output / f"egm-{target}.zip"
+  outside = tmp_path / "outside.zip"
+  original_zipfile = zipfile.ZipFile
+
+  def claim_archive(*args, **kwargs):
+    if symlink:
+      archive.symlink_to(outside)
+    else:
+      archive.write_bytes(b"another build owns this file")
+    return original_zipfile(*args, **kwargs)
+
+  monkeypatch.setattr(zipfile, "ZipFile", claim_archive)
+  with pytest.raises(FileExistsError):
+    build(source, target, output)
+  if symlink:
+    assert archive.is_symlink()
+    assert not outside.exists()
+  else:
+    assert archive.read_bytes() == b"another build owns this file"
+
+
 def test_published_claude_runtime_is_current(tmp_path: Path) -> None:
   """The directory subfolder must contain exactly the reviewed runtime."""
   generated, _ = build(ROOT, "claude", tmp_path)

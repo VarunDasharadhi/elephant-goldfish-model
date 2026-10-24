@@ -6,8 +6,8 @@ operational guardrails.
 
 | Document | Author | Primary Component |
 | :------- | :----- | :---------------- |
-| [runtime_packaging.md](runtime_packaging.md)<br>Draft runtime package boundaries, permissions, and validation. | [@n3wth](https://github.com/n3wth) | Runtime packaging proposal (#120) |
-| [releases.md](releases.md)<br>Draft versioned archives, checksums, and manual release procedure. | [@n3wth](https://github.com/n3wth) | Release proposal (#128) |
+| [runtime_packaging.md](runtime_packaging.md)<br>Draft runtime package boundaries, permissions, and validation. | [@n3wth](https://github.com/n3wth) | Runtime packaging implementation (#136) |
+| [releases.md](releases.md)<br>Draft versioned archives, checksums, and manual release procedure. | [@n3wth](https://github.com/n3wth) | Release implementation (#137) |
 | [architecture.md](architecture.md)<br>System architecture of the EGM framework covering component models, end-to-end dataflow, and agent lifecycle. | [@quinnjim](https://github.com/quinnjim), [@eewing314](https://github.com/eewing314) | [EGM Framework Architecture](../../README.md) |
 | [brainstorm.md](brainstorm.md)<br>Fast zero-doc ideation tool using a 6-lens Goldfish swarm to audit and stress-test early concepts before drafting. | [@briansuchy](https://github.com/briansuchy) | [`egm_brainstorm`](../../skills/egm_brainstorm/SKILL.md) |
 | [draft.md](draft.md)<br>Iterative section-by-section specification drafting protocol and semantic boundary definitions. | [@quinnjim](https://github.com/quinnjim), [@eewing314](https://github.com/eewing314) | [`egm_draft`](../../skills/egm_draft/SKILL.md) |

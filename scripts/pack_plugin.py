@@ -23,6 +23,33 @@ HOST = {
                ".claude-plugin/agents/*.md"),
     "openai": (".codex-plugin/plugin.json",),
 }
+SKILLS = (
+    "egm_bootstrap", "egm_brainstorm", "egm_draft", "egm_drift_report",
+    "egm_resolve", "egm_review", "egm_review_loop",
+)
+REQUIRED_SHARED = (
+    "plugin.json", "LICENSE", "README.md", "assets/icon.svg",
+    "docs/index.md", "docs/getting_started.md", "docs/harnesses.md",
+    "docs/claude.md", "docs/codex.md", "docs/faq.md", "docs/privacy.md",
+    "resources/README.md", "resources/execution_instructions.md",
+    "skills/egm_bootstrap/references/worker-return.schema.json",
+    "skills/egm_draft/references/design_doc.md",
+) + tuple(
+    f"skills/{skill}/{name}"
+    for skill in SKILLS
+    for name in ("SKILL.md", "agents/openai.yaml", "assets/icon.svg")
+) + tuple(
+    f"agents/{name}.md" for name in (
+        "bootstrap_orchestrator", "codebase_details", "comprehension",
+        "design_critic", "implementation_readiness", "structural", "style",
+        "synthesizer", "zoom_out",
+    )
+) + tuple(
+    f"resources/document_standards/{name}-standard.md" for name in (
+        "feature-spec", "heilmeier", "implementation-readiness",
+        "re-implementation", "zoom-out",
+    )
+)
 
 
 def build(root: Path, target: str, output: Path) -> tuple[Path, Path]:
@@ -30,7 +57,7 @@ def build(root: Path, target: str, output: Path) -> tuple[Path, Path]:
   root = root.resolve()
   folder = output.resolve() / f"egm-{target}"
   archive = folder.with_suffix(".zip")
-  if folder.exists() or archive.exists():
+  if any(path.exists() or path.is_symlink() for path in (folder, archive)):
     raise ValueError("Output folder or ZIP already exists")
   if folder == root or root.is_relative_to(folder):
     raise ValueError("Output must not contain the source tree")
@@ -45,8 +72,7 @@ def build(root: Path, target: str, output: Path) -> tuple[Path, Path]:
         raise ValueError(f"Path outside source: {relative}")
       if path.is_file():
         files.add(relative)
-  for name in ("plugin.json", "LICENSE", "README.md",
-               HOST[target][0]):
+  for name in REQUIRED_SHARED + (HOST[target][0],):
     if Path(name) not in files:
       raise ValueError(f"Missing required file: {name}")
   manifest = json.loads((root / HOST[target][0]).read_text())
@@ -70,7 +96,7 @@ def build(root: Path, target: str, output: Path) -> tuple[Path, Path]:
       raise ValueError(f"Unbundled manifest reference: {reference}")
   output.mkdir(parents=True, exist_ok=True)
   folder.mkdir()
-  with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as bundle:
+  with zipfile.ZipFile(archive, "x", zipfile.ZIP_DEFLATED) as bundle:
     for relative in sorted(files):
       data = (root / relative).read_bytes()
       destination = folder / relative
