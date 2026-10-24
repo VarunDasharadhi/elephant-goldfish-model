@@ -13,5 +13,5 @@
 # limitations under the License.
 
 # Development and testing dependencies for EGM Open Source
-pytest>=7.4.0
-pyyaml>=6.0.1
+pytest==8.3.5
+pyyaml==6.0.2
