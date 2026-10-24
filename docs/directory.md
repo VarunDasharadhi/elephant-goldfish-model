@@ -20,6 +20,8 @@ Symlinked runtime paths and escaping manifest references are rejected.
 Contributor instructions, the AI policy, and the Markdown PR template are
 excluded. Runtime documentation links to their repository copies.
 No workflow configuration ships.
+The runtime guide list is explicit. New host guides do not enter these archives
+until their package requirements are reviewed.
 
 For Anthropic, the generated runtime is checked in at `distributions/claude`.
 Submit that subfolder through the directory portal. After source changes,

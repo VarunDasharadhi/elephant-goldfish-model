@@ -13,7 +13,9 @@ SHARED = (
     "skills/*/SKILL.md", "skills/*/agents/openai.yaml",
     "skills/*/assets/*.svg", "skills/*/assets/*.png", "skills/*/references/*.md",
     "skills/*/references/*.json", "agents/*.md", "resources/*.md",
-    "resources/document_standards/*.md", "docs/*.md",
+    "resources/document_standards/*.md", "docs/index.md", "docs/getting_started.md",
+    "docs/harnesses.md", "docs/claude.md", "docs/codex.md", "docs/faq.md",
+    "docs/privacy.md",
     "assets/*.svg", "assets/*.png", "docs/assets/*.svg", "docs/assets/*.png",
 )
 HOST = {
@@ -41,7 +43,7 @@ def build(root: Path, target: str, output: Path) -> tuple[Path, Path]:
         raise ValueError(f"Symlink in runtime path: {relative}")
       if not path.resolve().is_relative_to(root):
         raise ValueError(f"Path outside source: {relative}")
-      if path.is_file() and relative.as_posix() != "docs/directory.md":
+      if path.is_file():
         files.add(relative)
   for name in ("plugin.json", "LICENSE", "README.md",
                HOST[target][0]):

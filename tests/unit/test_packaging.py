@@ -39,7 +39,8 @@ def test_runtime_bundle_is_complete_and_reproducible(
 ) -> None:
   for name in ("site/font.woff2", "tests/secret.txt", ".github/workflows/a.yml",
                ".agents/plugins/marketplace.json", "hooks/run.sh",
-               ".claude-plugin/hooks/run.sh", "assets/private.txt"):
+               ".claude-plugin/hooks/run.sh", "assets/private.txt",
+               "docs/experimental-host.md"):
     file = source / name
     file.parent.mkdir(parents=True, exist_ok=True)
     file.write_text("must not ship")
@@ -76,6 +77,8 @@ def test_runtime_bundle_is_complete_and_reproducible(
                    or p.endswith("/TEST.md") or p.endswith("marketplace.json")
                    for p in names)
     assert "assets/private.txt" not in names
+    assert "docs/experimental-host.md" not in names
+    assert "docs/directory.md" not in names
     assert (".claude-plugin/plugin.json" in names) == (target == "claude")
     assert (".claude-plugin/icon.png" in names) == (target == "claude")
     assert (".claude-plugin/agents/style.md" in names) == (target == "claude")
