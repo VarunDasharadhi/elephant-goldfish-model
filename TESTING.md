@@ -6,6 +6,9 @@ This document provides a step-by-step developer playbook for running unit tests 
 
 ## Setup
 
+Install Node.js 22 or newer for the offline scope-advisory workflow tests.
+These execute the workflow's JavaScript against a fake GitHub API.
+
 ### A. Python Environment Setup
 Create and activate an isolated Python 3.10+ virtual environment:
 
