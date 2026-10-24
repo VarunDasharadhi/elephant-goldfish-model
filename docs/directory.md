@@ -17,8 +17,9 @@ runtime guides, manifests, and icons. It excludes the site, tests, workflows,
 marketplace catalogs, hooks, and build tools. Claude retains its native agent
 adapters; OpenAI excludes Claude components. Runtime files are nonexecutable.
 Symlinked runtime paths and escaping manifest references are rejected.
-Contributor instructions, the AI policy, and the exact Markdown PR template
-are included to preserve documentation links. No workflow configuration ships.
+Contributor instructions, the AI policy, and the Markdown PR template are
+excluded. Runtime documentation links to their repository copies.
+No workflow configuration ships.
 
 For Anthropic, the generated runtime is checked in at `distributions/claude`.
 Submit that subfolder through the directory portal. After source changes,
