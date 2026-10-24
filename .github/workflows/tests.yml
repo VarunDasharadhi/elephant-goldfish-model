@@ -15,7 +15,7 @@
 # Run the Tier 1 unit tests (frontmatter schema, relative link integrity,
 # scenario coverage, eval runner) described in TESTING.md. They are offline and
 # need no API keys or model dependencies.
-name: Tests
+name: Run tests
 
 on:
   pull_request:
