@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <title>Review loop: iterative circular arrows</title>
+  <path stroke="#1b6ef3" d="M4 10a8 8 0 0 1 14-4l2 2M20 3v5h-5"/>
+  <path stroke="#e86e00" d="M20 14a8 8 0 0 1-14 4l-2-2M4 21v-5h5"/>
+</svg>

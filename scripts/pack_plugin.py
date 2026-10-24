@@ -10,7 +10,8 @@ import zipfile
 
 SHARED = (
     "plugin.json", "LICENSE", "README.md",
-    "skills/*/SKILL.md", "skills/*/references/*.md",
+    "skills/*/SKILL.md", "skills/*/agents/openai.yaml",
+    "skills/*/assets/*.svg", "skills/*/assets/*.png", "skills/*/references/*.md",
     "skills/*/references/*.json", "agents/*.md", "resources/*.md",
     "resources/document_standards/*.md", "docs/*.md",
     "assets/*.svg", "assets/*.png", "docs/assets/*.svg", "docs/assets/*.png",

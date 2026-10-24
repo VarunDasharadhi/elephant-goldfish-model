@@ -2,9 +2,9 @@
   "name": "egm",
   "displayName": "Elephant-Goldfish Model",
   "version": "0.1.0",
-  "description": "Elephant-Goldfish Model: spec-driven development with deep-context drafting and zero-context Goldfish reviews.",
+  "description": "Draft specs, review designs, and check implementation drift.",
   "author": {
-    "name": "Google LLC"
+    "name": "Google"
   },
   "homepage": "https://egm.dev",
   "repository": "https://github.com/google/elephant-goldfish-model",

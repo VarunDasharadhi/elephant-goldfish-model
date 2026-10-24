@@ -7,9 +7,11 @@ import json
 from pathlib import Path
 import runpy
 import shutil
+from xml.etree import ElementTree
 import zipfile
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 build = runpy.run_path(str(ROOT / "scripts/pack_plugin.py"))["build"]
@@ -48,6 +50,18 @@ def test_runtime_bundle_is_complete_and_reproducible(
     assert bundle.testzip() is None
     names = set(bundle.namelist())
     assert len([p for p in names if p.endswith("/SKILL.md")]) == 7
+    for skill in source.glob("skills/*/SKILL.md"):
+      prefix = skill.parent.relative_to(source)
+      metadata = yaml.safe_load(bundle.read(str(prefix / "agents/openai.yaml")))
+      interface = metadata["interface"]
+      assert interface["display_name"]
+      assert 25 <= len(interface["short_description"]) <= 64
+      for field in ("icon_small", "icon_large"):
+        icon = Path(interface[field])
+        assert not icon.is_absolute() and ".." not in icon.parts
+        data = bundle.read(str(prefix / icon))
+        assert data == (skill.parent / icon).read_bytes()
+        assert ElementTree.fromstring(data).tag == "{http://www.w3.org/2000/svg}svg"
     assert "skills/egm_bootstrap/references/worker-return.schema.json" in names
     assert "resources/document_standards/feature-spec-standard.md" in names
     assert "agents/design_critic.md" in names
