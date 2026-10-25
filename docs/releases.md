@@ -1,9 +1,10 @@
 # Versioned releases
 
-The canonical version is `plugin.json`'s `version`. Claude and Codex manifests
-must match it. Keep one EGM version across these hosts; marketplace catalogs
-without a version field do not need one. Other host adapters need explicit
-packaging and verification before being added to release support.
+The canonical version is `plugin.json`'s `version`. Every host manifest that
+declares an EGM version must match it, including experimental adapters such as
+Cursor when present. Marketplace catalogs without a version field do not need
+one. Version synchronization does not add a host to release support; other host
+adapters still need explicit packaging and verification.
 
 While EGM is pre-1.0, use patch bumps for compatible fixes and minor bumps for
 features or incompatible workflow changes. Explain breaking changes in release
@@ -12,7 +13,10 @@ paths, and report formats. Do not change published artifacts under the same tag.
 
 ## Prepare a candidate
 
-1. Update the root, Claude, and Codex manifest versions in a reviewed PR.
+1. Update `plugin.json`, `.claude-plugin/plugin.json`, and
+   `.codex-plugin/plugin.json` in a reviewed PR. Also update any other versioned
+   host manifests present, including `.cursor-plugin/plugin.json`, to the same
+   version.
 2. Regenerate `distributions/claude` using the runtime builder and run
    `pytest tests/unit`. Include any migration notes in the PR.
 3. After merge, a maintainer creates and pushes an annotated `vMAJOR.MINOR.PATCH`
