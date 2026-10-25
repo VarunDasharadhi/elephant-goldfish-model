@@ -19,9 +19,8 @@ python3 -m venv .venv
 # Activate environment
 source .venv/bin/activate
 
-# Dependency groups require pip 25.1 or newer
-python -m pip install --upgrade "pip>=25.1"
-python -m pip install --group test
+# Install testing dependencies
+pip install -r requirements-dev.txt
 ```
 
 ---
