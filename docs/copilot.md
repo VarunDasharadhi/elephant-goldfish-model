@@ -171,6 +171,9 @@ resolves this discovery gap without a model run.
 
 Discovery does not prove skill execution, write denial, or context isolation.
 The RPC inventory does not expose `include-custom-instructions` enforcement.
+This historical note does not identify the tested EGM commit or installed package
+checksum. Repeat discovery against the pinned candidate before relying on it for
+that candidate.
 
 Before a support claim, run the existing brainstorm, draft, and review scenarios
 from each skill's `test_scenarios.yaml` with explicit model-use authorization.
@@ -185,10 +188,6 @@ Record these outcomes separately:
 Inspect tool records to verify write denial. A reviewer promise is not enforcement.
 If records are unavailable, retain an unverified result. Read access to shared files
 can expose prior findings; fresh context is not a filesystem sandbox.
-
-Cursor local Agent and Grok Bot require separate assessment under
-[issue #145](https://github.com/google/elephant-goldfish-model/issues/145).
-This Copilot adapter provides no evidence of support for either surface.
 
 ## Official references
 
