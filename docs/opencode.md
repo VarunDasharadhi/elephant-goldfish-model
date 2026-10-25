@@ -40,8 +40,20 @@ OPENCODE_CONFIG=/absolute/egm-opencode-candidate/opencode.json opencode --agent 
 ```
 
 Model calls require separate user authorization. Installation and version checks do not require model calls.
-Use `/egm-brainstorm`, `/egm-draft`, or `/egm-review` with the usual inputs.
 Select `egm` before native skill use. Other primary agents do not receive this adapter's dispatch instructions.
+For review text, use an ordinary message rather than a slash command. For example:
+
+```text
+Use the egm-review skill to review /absolute/path/design.md.
+```
+
+Paste material into that ordinary message, or save it in a file for the agent to read.
+The generated `/egm-brainstorm`, `/egm-draft`, and `/egm-review` commands retain
+OpenCode's native command syntax. Their arguments are not literal text: OpenCode
+evaluates shell markers (an exclamation mark followed by a command in backticks)
+before agent tool permissions apply. Do not paste untrusted review material into
+slash-command arguments. Markdown fences do not disable this preprocessing.
+
 To uninstall, stop sessions and remove only this candidate directory. Remove its environment override.
 
 ## Paths and dispatch
@@ -129,6 +141,8 @@ Reviewed on 2026-10-24. The versioned sources define this adapter's interface:
 - [V1 agent configuration](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/web/src/content/docs/agents.mdx)
 - [V1 config and merge order](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/web/src/content/docs/config.mdx)
 - [V1 skill discovery](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/web/src/content/docs/skills.mdx)
+- [V1 command syntax](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/web/src/content/docs/commands.mdx)
+- [V1 command preprocessing](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/opencode/src/session/prompt.ts)
 - [V1 task implementation](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/opencode/src/tool/task.ts)
 - [V1 permission evaluator](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/opencode/src/permission/index.ts)
 - [V1 MCP resource permission paths](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/opencode/src/session/tools.ts)
