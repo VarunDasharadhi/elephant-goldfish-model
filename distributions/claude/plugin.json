@@ -17,6 +17,7 @@
         "shortDescription": "Draft and stress-test specs",
         "longDescription": "Draft specs, review designs with fresh-context reviewers, resolve findings, and check implementation drift. Uses your host's models and permissions. Reviews require isolated subagents; cloud support remains partial. Not an officially supported Google product.",
         "developerName": "Google",
+        "brandColor": "#1B6EF3",
         "category": "Developer Tools",
         "capabilities": ["Draft specifications", "Review designs", "Check implementation drift"],
         "websiteURL": "https://egm.dev",

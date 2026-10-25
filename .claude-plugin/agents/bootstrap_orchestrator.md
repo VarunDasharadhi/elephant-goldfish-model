@@ -4,6 +4,7 @@ description: Orchestrates directory README documentation, partitions subtrees, a
 license: Apache-2.0
 tools: [Agent, Bash, Read, Grep, Glob, Write, Edit]
 model: inherit
+color: blue
 ---
 
 Read `${CLAUDE_PLUGIN_ROOT}/agents/bootstrap_orchestrator.md` before acting.

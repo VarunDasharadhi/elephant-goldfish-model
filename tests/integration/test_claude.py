@@ -25,6 +25,48 @@ def trace_directory(workspace: Path) -> Path:
   return config / "projects" / project
 
 
+def assert_child_probe(
+    raw: str, persona: Path, markers: list[str], deny_persona: bool = False,
+) -> None:
+  """Check the native child's answer, tool restrictions, and completed read."""
+  assert all(marker not in raw for marker in markers)
+  answers = []
+  child_reads = []
+  read_results = []
+  for line in raw.split("\n"):
+    if not line.strip():
+      continue
+    event = json.loads(line)
+    content = event.get("message", {}).get("content", [])
+    for block in content if isinstance(content, list) else []:
+      if event.get("type") == "assistant":
+        if block["type"] == "tool_use":
+          assert block["name"] == "Read"
+          child_reads.append((block["id"], block["input"]["file_path"]))
+        if block["type"] == "text":
+          answers.append(block["text"])
+      if event.get("type") == "user" and block["type"] == "tool_result":
+        result = block.get("content", "")
+        if isinstance(result, list):
+          result = "".join(
+              part["text"] for part in result
+              if part.get("type") == "text" and isinstance(part.get("text"), str)
+          )
+        read_results.append((
+            block["tool_use_id"], bool(block.get("is_error")),
+            isinstance(result, str) and bool(result.strip()),
+        ))
+  # Preserve the native probe's allowance for an explanation before the sentinel.
+  assert answers and answers[-1].strip().splitlines()[-1:] == [
+      "RESOURCE_UNREADABLE" if deny_persona else "UNKNOWN"
+  ]
+  assert [path for _, path in child_reads] == [str(persona)]
+  assert read_results == [(child_reads[0][0], deny_persona, True)], (
+      "Persona read has no correlated native denial result" if deny_persona
+      else "Persona read has no successful native tool result"
+  )
+
+
 @pytest.mark.parametrize("deny_persona", [False, True], ids=["scoped-read", "denied-persona"])
 def test_native_reviewer_isolation(tmp_path: Path, deny_persona: bool) -> None:
   root = Path(__file__).resolve().parents[2]
@@ -102,28 +144,4 @@ Do not read other plugins or logs, use MCP, or modify files.
   children = list((traces / session / "subagents").glob("agent-*.jsonl"))
   assert len(children) == 1
   raw = children[0].read_text()
-  assert all(marker not in raw for marker in markers)
-  answers = []
-  child_reads = []
-  child_read_results = []
-  for line in raw.split("\n"):
-    if not line.strip():
-      continue
-    event = json.loads(line)
-    for block in event.get("message", {}).get("content", []):
-      if isinstance(block, dict) and block.get("type") == "tool_result":
-        child_read_results.append(bool(block.get("is_error")))
-    if event.get("type") == "assistant":
-      for block in event["message"]["content"]:
-        if block["type"] == "tool_use":
-          assert block["name"] == "Read"
-          child_reads.append(block["input"]["file_path"])
-        if block["type"] == "text":
-          answers.append(block["text"])
-  # Models may prefix the sentinel with an explanation. Tool results and the
-  # full child transcript independently establish access and marker isolation.
-  assert answers[-1].strip().splitlines()[-1] == (
-      "RESOURCE_UNREADABLE" if deny_persona else "UNKNOWN"
-  )
-  assert child_reads == [str(plugin / "agents/zoom_out.md")]
-  assert child_read_results == [deny_persona]
+  assert_child_probe(raw, plugin / "agents/zoom_out.md", markers, deny_persona)
