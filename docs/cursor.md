@@ -134,6 +134,9 @@ The probe discovers seven skills, seven read-only reviewer registrations, and
 one active rule in the relocated package. Initially, `readonly: true` alone
 registered default permissions. The added `permissionMode` field corrects that result.
 These are native parsing results, not interactive installation or runtime evidence.
+This historical note does not identify the tested EGM commit or installed package
+checksum. Repeat discovery against the pinned candidate before relying on it for
+that candidate.
 
 Before a live run, obtain explicit approval for model usage.
 Use a clean workspace and profile without unrelated MCP services or memory.
