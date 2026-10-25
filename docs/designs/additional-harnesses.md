@@ -138,8 +138,9 @@ Offline checks must cover:
 - Manifest parsing and identity/version consistency with the existing package.
 - All referenced persona, standard, and guide paths in the installed layout.
 - Adapter tool restrictions and the absence of copies of shared behavior.
-- Recorded evidence with missing starts, missing completions, malformed records,
-  and Unicode line separators. Reuse existing parsers and fixtures where possible.
+- When a native evidence parser is introduced, fixtures with missing starts,
+  missing completions, malformed records, and Unicode line separators. Establish
+  the schema from real host records first; reuse applicable parsers and fixtures.
 
 Live checks run only when the user explicitly requests them. Use a clean host profile and
 a candidate at a fixed version. Run brainstorm, draft, and review, including a real human
