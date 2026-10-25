@@ -59,6 +59,7 @@ def install(destination: Path) -> Path:
         agents[name(persona)] = {
             "description": f"EGM read-only {reviewer} reviewer (experimental)",
             "mode": "subagent",
+            "color": "#E86E00",
             "permission": {
                 "*": "deny", "read": {"*": "allow", "mcp:*": "deny"},
                 "glob": "allow", "grep": "allow",
@@ -73,6 +74,7 @@ def install(destination: Path) -> Path:
     agents["egm"] = {
         "description": "EGM orchestrator (experimental OpenCode V1)",
         "mode": "primary",
+        "color": "#1B6EF3",
         "permission": {
             "*": "ask", "read": "allow", "glob": "allow", "grep": "allow",
             "skill": {"*": "deny", "egm-*": "allow"},

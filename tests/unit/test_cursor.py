@@ -44,9 +44,10 @@ def test_manifest_selects_native_adapters(installed: Path) -> None:
     assert manifest["rules"] == "./.cursor-plugin/rules/"
     assert set(manifest) == {
         "name", "version", "description", "author", "homepage", "repository",
-        "license", "skills", "agents", "rules",
+        "license", "skills", "agents", "rules", "logo",
     }
     assert not (installed / "plugin.json").exists()
+    assert (installed / manifest["logo"]).is_file()
     for component in ("skills", "agents", "rules"):
         assert (installed / manifest[component]).is_dir()
     adapters = installed / manifest["agents"]
