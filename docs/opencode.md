@@ -68,6 +68,10 @@ Set `subagent_type` to the persona's canonical frontmatter name.
 Supply `description` and `prompt`. Omit `task_id` to create a fresh session.
 Use foreground tasks. Do not enable background dispatch or reuse a reviewer session.
 The primary agent performs synthesis and writes reports; no nested synthesizer adapter is installed.
+Bootstrap worker and scout delegation is outside this adapter's scope. Although
+all seven skills are discoverable, the task allowlist contains only the seven
+reviewer types. Stop if bootstrap requires an orchestrator or scout; do not
+substitute a reviewer or simulate the missing worker.
 
 Pass absolute paths for the persona, target, standards, and selected sources.
 Do not pass parent history, private reasoning, or memory.
@@ -120,6 +124,9 @@ The resolved reviewer toolset enabled only `read`, `glob`, and `grep`.
 The `debug skill` command discovered all seven skills from the installed candidate paths.
 These commands made no model calls. This result does not prove task execution or runtime permission enforcement.
 Separate XDG directories did not prevent discovery of home-directory skills. A clean verification profile must account for those locations too.
+This historical note does not identify the tested EGM commit or installed bundle
+checksum. Repeat discovery against the pinned candidate before relying on it for
+that candidate.
 
 Before a support claim, explicitly authorize and complete these checks:
 
@@ -147,6 +154,3 @@ Reviewed on 2026-10-24. The versioned sources define this adapter's interface:
 - [V1 permission evaluator](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/opencode/src/permission/index.ts)
 - [V1 MCP resource permission paths](https://github.com/anomalyco/opencode/blob/v1.18.29/packages/opencode/src/session/tools.ts)
 - [Current official agent guide](https://opencode.ai/docs/agents/)
-
-Cursor local Agent and Grok Bot are separate surfaces under [#145](https://github.com/google/elephant-goldfish-model/issues/145).
-This adapter establishes no compatibility or support claim for either surface.
